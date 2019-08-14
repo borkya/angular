@@ -23,8 +23,7 @@ export class ListComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       (params)=>{
         this.characters= this.swService.getCharacters(params.side)
-      }
-    );
+      });
   }
 
 }
