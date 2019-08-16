@@ -12,12 +12,14 @@ import { StarWarsService } from './star-wars.service';
 import { LogService } from './log.service';
 import { CreateCharacterComponent } from './create-character/create-character.component';
 import { HeaderComponent } from './header/header.component';
+import { ConfigService } from './config.service';
+import { PaginationComponent } from './pagination/pagination.component';
 
 const routes  = [
   {path:'characters', component:TabsComponent,children:[
     {path:'', redirectTo:'all',pathMatch:'full'},
     {path:':side', component:ListComponent}
-  ]},
+      ]},
   {path:'new-character', component:CreateCharacterComponent},
   // {path:'**', component:TabsComponent}
   // {path:'**', redirectTo:'/'}
@@ -31,8 +33,8 @@ const routes  = [
       ListComponent,
       ItemComponent,
       CreateCharacterComponent,
-      HeaderComponent
-
+      HeaderComponent,
+      PaginationComponent
    ],
    imports: [
       BrowserModule,
@@ -42,7 +44,8 @@ const routes  = [
    ],
    providers: [
       StarWarsService,
-      LogService
+      LogService,
+      ConfigService
    ],
    bootstrap: [
       AppComponent

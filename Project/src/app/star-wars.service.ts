@@ -1,7 +1,11 @@
 import { LogService } from './log.service';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import 'rxjs/add/operator/map';
+import { ConfigService } from './config.service';
+import { Config } from './Config';
+
 
 @Injectable()
 export class StarWarsService {
@@ -15,18 +19,41 @@ export class StarWarsService {
   private logService : LogService;
   charactersChanged = new Subject<void>();
   http : HttpClient;
+  config : ConfigService;
+  configData : Config;
 
-  constructor(logService :LogService , http :HttpClient){
+  constructor(logService :LogService , http :HttpClient,config:ConfigService){
     this.logService = logService;
     this.http = http;
+    this.config = config;
   }
 
+  showConfig() {
+    this.config.getConfig()
+      .subscribe((data : Config) => this.configData=  {
+          results: data['results'],
+          next:  data['next'],
+          count:  data['count'],
+          previous:  data['previous'],
+          length:  data['lenght']
+      });
+    console.log('showconfig' + this.configData);
+  }
   //call api to get characters
 
   fetchCharacters(){
-    this.http.get('https://swapi.co/api/people/').subscribe(
-      (response:Response)=>
-      {console.log(response);
+    this.http.get('https://swapi.co/api/people/')
+    .map((response: any)=>{
+      const extarctedChars = response.results;
+      const chars = extarctedChars.map((char)=>{
+        return{name: char.name,side:''};
+      });
+      return chars;                   // This is passed to the subscribe
+    }).subscribe(
+      (data)=>
+      {console.log(data);
+       this.characters = data;
+       this.charactersChanged.next();
       });
   }
 
@@ -43,13 +70,13 @@ export class StarWarsService {
     const pos = this.characters.findIndex((char)=> {   //
         return char.name === charInfo.name;
     })
-      this.characters[pos].side = charInfo.side;
-      this.charactersChanged.next();
-      this.logService.wrieteLog('Changed side of ' + charInfo.name + ', new side :' + charInfo.side);
+    this.characters[pos].side = charInfo.side;
+    this.charactersChanged.next();
+    this.logService.wrieteLog('Changed side of ' + charInfo.name + ', new side :' + charInfo.side);
       }
 
       addCharacter(name,side){
-        const pos= this.characters.findIndex((char)=> {   //
+        const pos= this.characters.findIndex((char)=> {   // returns -1 if not equal
           return char.name === name;
         });
         if(pos !== -1){
