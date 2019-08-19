@@ -5,26 +5,16 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { ItemComponent } from './item/item.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { ListComponent } from './list/list.component';
-import { ItemComponent } from './item/item.component';
 import { StarWarsService } from './star-wars.service';
 import { LogService } from './log.service';
-import { CreateCharacterComponent } from './create-character/create-character.component';
 import { HeaderComponent } from './header/header.component';
 import { ConfigService } from './config.service';
 import { PaginationComponent } from './pagination/pagination.component';
+import { AppRoutingModule } from './app-routing.module';
 
-const routes  = [
-  {path:'characters', component:TabsComponent,children:[
-    {path:'', redirectTo:'all',pathMatch:'full'},
-    {path:':side', component:ListComponent}
-      ]},
-  {path:'new-character', component:CreateCharacterComponent},
-  // {path:'**', component:TabsComponent}
-  // {path:'**', redirectTo:'/'}
-  {path:'**', redirectTo:'/characters'}
-];
 
 @NgModule({
    declarations: [
@@ -32,15 +22,13 @@ const routes  = [
       TabsComponent,
       ListComponent,
       ItemComponent,
-      CreateCharacterComponent,
       HeaderComponent,
       PaginationComponent
    ],
    imports: [
-      BrowserModule,
-      FormsModule,
-      RouterModule.forRoot(routes),
-      HttpClientModule
+      BrowserModule,       // this module can be imported only once in app. it fprovies ngIf etc. which can be provided by CommonModule
+      HttpClientModule,
+      AppRoutingModule
    ],
    providers: [
       StarWarsService,
