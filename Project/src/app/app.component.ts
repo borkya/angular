@@ -15,6 +15,6 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
-  this.swService.fetchCharacters();
+  this.swService.fetchCharacters('https://swapi.co/api/people/');
   }
 }

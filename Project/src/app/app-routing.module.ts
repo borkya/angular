@@ -10,7 +10,7 @@ const routes  = [
     {path: ':side', component: ListComponent}]},
   {path: 'new-character', loadChildren : './create-character/create-character.module#CreateCharacterModule'},
   // {path:'**', component:TabsComponent}
-  // {path:'**', redirectTo:'/'}
+  // {path:'**', redirectTo:'/'},
   {path: '**', redirectTo: '/characters'}
 ];
 

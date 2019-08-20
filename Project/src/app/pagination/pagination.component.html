@@ -1,6 +1,6 @@
 <nav aria-label="...">
   <ul class="pager">
-    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
-    <li class="next"><a href="#">Next <span aria-hidden="true">&rarr;</span></a></li>
+    <li><a routerLink="/characters/all" (click)="onPrevious()">Previous</a></li>
+    <li><a routerLink="/characters/all" (click)="onNext()">Next</a></li>
   </ul>
 </nav>
